@@ -1,7 +1,60 @@
-#iss-data {
+body {
+    background: #000;
+    color: #0f0;
+    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+}
+
+#iss-data, #user-data {
     display: none;
 }
 
-#user-data {
-    display: none;
+h1, h2, p, button, span, div, label, select {
+    color: #0f0;
+    font-family: inherit;
+}
+
+button {
+    background: #111;
+    border: 1px solid #0f0;
+    color: #0f0;
+    font-family: inherit;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #222;
+}
+
+#settings-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 260px;
+    height: 100%;
+    background: #111;
+    border-left: 2px solid #0f0;
+    padding: 1em;
+    box-sizing: border-box;
+    transition: transform 0.3s;
+    z-index: 1000;
+}
+
+#settings-panel.collapsed {
+    transform: translateX(100%);
+}
+
+#settings-toggle {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    z-index: 1100;
+}
+
+select {
+    background: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+    font-family: inherit;
+    padding: 0.3em 0.5em;
 }

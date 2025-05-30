@@ -4,6 +4,11 @@ let userData = {};
 let permissionGranted = false;
 const apiUrl = 'https://api.wheretheiss.at/v1/satellites/25544';
 
+// MIDI settings
+let selectedMidiDeviceId = null;
+let selectedMidiChannel = 1;
+let selectedMidiCC = 1;
+
 // Get permissions for geolocation and MIDI access
 function permissionRequest() {
     let geolocationGranted = false;
@@ -15,6 +20,7 @@ function permissionRequest() {
             document.getElementById('permissions').style.display = 'none';
             fetchISSData();
             setInterval(fetchISSData, 5000);
+            populateMidiDevices();
         }
     }
 
@@ -49,13 +55,9 @@ function permissionRequest() {
                         .enable()
                         .then(() => {
                             console.log("WebMidi enabled!")
-                            console.log("MIDI Inputs:");
-                            WebMidi.inputs.forEach(input => console.log(input.manufacturer, input.name));
-                            console.log("MIDI Outputs:");
-                            WebMidi.outputs.forEach(output => console.log(output.manufacturer, output.name));
+                            midiGranted = true;
+                            checkAndContinue();
                         }).catch(err => alert(err));
-                    midiGranted = true;
-                    checkAndContinue();
                 })
                 .catch(function(error) {
                     console.error('MIDI Access request error:', error);
@@ -156,13 +158,51 @@ function getUserLocation() {
     }
 }
 
+// Toggle settings panel
+function toggleSettingsPanel() {
+    const panel = document.getElementById('settings-panel');
+    panel.classList.toggle('collapsed');
+}
+
+// Populate MIDI device dropdown
+function populateMidiDevices() {
+    const select = document.getElementById('midi-device-select');
+    select.innerHTML = '';
+    WebMidi.outputs.forEach(output => {
+        const option = document.createElement('option');
+        option.value = output.id;
+        option.text = `${output.manufacturer} ${output.name}`;
+        select.appendChild(option);
+    });
+    if (WebMidi.outputs.length > 0) {
+        selectedMidiDeviceId = WebMidi.outputs[0].id;
+    }
+}
+
+// Handle MIDI device selection
+document.addEventListener('DOMContentLoaded', () => {
+    const deviceSelect = document.getElementById('midi-device-select');
+    const channelSelect = document.getElementById('midi-channel-select');
+    const ccSelect = document.getElementById('midi-cc-select');
+
+    deviceSelect.addEventListener('change', function() {
+        selectedMidiDeviceId = this.value;
+    });
+    channelSelect.addEventListener('change', function() {
+        selectedMidiChannel = parseInt(this.value, 10);
+    });
+    ccSelect.addEventListener('change', function() {
+        selectedMidiCC = parseInt(this.value, 10);
+    });
+});
+
 // Access MIDI devices and play a sound
 function playSound() {
     // Play a note on the first output
     if (WebMidi.outputs.length > 0) {
-        let output = WebMidi.outputs[0];
-        let channel = output.channels[1];
-        console.log("Playing note C4 on output:", output.name);
+        let output = WebMidi.getOutputById(selectedMidiDeviceId) || WebMidi.outputs[0];
+        let channel = output.channels[selectedMidiChannel];
+        console.log(`Playing note C4 on output: ${output.name}, channel: ${selectedMidiChannel}`);
         channel.playNote("C4", {duration: 1000});
     } else {
         console.log("No MIDI outputs available.");

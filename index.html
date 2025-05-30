@@ -11,6 +11,28 @@
     </head>
     <body>
         <h1>UFO: Ultra-Low Frequency Oscillator</h1>
+        <button id="settings-toggle" onclick="toggleSettingsPanel()">⚙️ Settings</button>
+        <div id="settings-panel" class="collapsed">
+            <h2>Settings</h2>
+            <label for="midi-device-select">MIDI Device:</label>
+            <select id="midi-device-select"></select>
+            <br />
+            <label for="midi-channel-select">Channel:</label>
+            <select id="midi-channel-select">
+                <!-- Channels 1-16 -->
+                <script>
+                    for(let i=1;i<=16;i++)document.write(`<option value="${i}">${i}</option>`);
+                </script>
+            </select>
+            <br />
+            <label for="midi-cc-select">CC:</label>
+            <select id="midi-cc-select">
+                <!-- CC 0-127 -->
+                <script>
+                    for(let i=0;i<=127;i++)document.write(`<option value="${i}">${i}</option>`);
+                </script>
+            </select>
+        </div>
         <div id="permissions">
             <p>This site needs permission to access your loction, and your MIDI devices.</p>
             <button id="grant-permissions" onclick="permissionRequest()">Grant permissions</button>
