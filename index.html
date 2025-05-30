@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>UFO: Ultra-Low Frequency Oscillator</title>
+        <script src="https://cdn.jsdelivr.net/npm/webmidi@latest/dist/iife/webmidi.iife.js"></script>
+        <script src="script.js"></script>
+        <link rel="stylesheet" href="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="UFO: Ultra-Low Frequency Oscillator" />
+    </head>
+    <body>
+        <h1>UFO: Ultra-Low Frequency Oscillator</h1>
+        <div id="permissions">
+            <p>This site needs permission to access your loction, and your MIDI devices.</p>
+            <button id="grant-permissions" onclick="permissionRequest()">Grant permissions</button>
+        </div>
+        <div id="iss-data">Loading...</div>
+        <div id="user-data">Loading...</div>
+        <button id="play-button" onclick="playSound()">Play a test note</button>
+    </body>
+</html>
